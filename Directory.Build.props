@@ -1,0 +1,87 @@
+<Project>
+  <PropertyGroup>
+    <CVRPATH Condition="'$(CVRPATH)' == ''">C:\Program Files (x86)\Steam\steamapps\common\ChilloutVR</CVRPATH>
+    <OutputPath>$(CVRPATH)\Mods\</OutputPath>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ManagedLibsPath>$(CVRPATH)\ChilloutVR_Data\Managed\</ManagedLibsPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>$(NoWarn);MSB3277;MSB3243;CS0649;CS0169;CS0618</NoWarn>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3243;MSB3277;CS0649;CS0169;CS0618</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
+    <Publicize Include="Assembly-CSharp-firstpass" IncludeCompilerGeneratedMembers="false" />
+    <Publicize Include="MiniMe++" IncludeCompilerGeneratedMembers="false" />
+    <Publicize Include="PlayerRagdollMod" IncludeCompilerGeneratedMembers="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- MelonLoader References (net6) -->
+    <Reference Include="MelonLoader">
+      <HintPath>$(CVRPATH)\MelonLoader\net6\MelonLoader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(CVRPATH)\MelonLoader\net6\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+
+    <!-- Mods References -->
+    <Reference Include="BTKUILib">
+      <HintPath>$(CVRPATH)\Mods\BTKUILib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MiniMe++">
+      <HintPath>$(CVRPATH)\Mods\MiniMe++.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PlayerRagdollMod">
+      <HintPath>$(CVRPATH)\Mods\PlayerRagdollMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+
+    <!-- Game Dependencies -->
+    <GameLibs Include="$(ManagedLibsPath)*.dll" />
+    <GameLibs Remove="$(ManagedLibsPath)Microsoft.Win32.Registry.dll" />
+  </ItemGroup>
+
+  <Target Name="AddDynamicReferences" BeforeTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <Reference Include="@(GameLibs->'%(Filename)')">
+        <HintPath>%(GameLibs.Identity)</HintPath>
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+
+  <Target Condition="'$(OS)' == 'Windows_NT'" Name="DeleteOutputDLLIfExists" BeforeTargets="BeforeBuild">
+    <Delete Files="$(OutputPath)$(TargetName).dll" ContinueOnError="true" />
+  </Target>
+</Project>

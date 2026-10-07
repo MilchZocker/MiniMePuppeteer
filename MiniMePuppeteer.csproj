@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>MiniMePuppeteer</AssemblyName>
+    <RootNamespace>MiniMePuppeteer</RootNamespace>
+  </PropertyGroup>
+</Project>

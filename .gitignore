@@ -1,0 +1,33 @@
+# .NET build outputs and generated/publicized assemblies
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+
+# Restored packages and local dependency copies
+packages/
+lib/
+libs/
+dependencies/
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.snupkg
+
+# Local IDE settings and user-specific project files
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs, temporary files, and OS metadata
+*.log
+*.tmp
+*.bak
+~$*
+Thumbs.db
+Desktop.ini
+.DS_Store
